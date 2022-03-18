@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function App() {
   const products=[
@@ -17,6 +17,7 @@ function App() {
         products.map(product=> <Product name={product.name} price={product.price}></Product>)
       }
       <Counter></Counter>
+      <ExternalUser></ExternalUser>
       {/* <Product name="Laptop"price="100000"></Product>
       <Product name="Phone" price="75000"></Product> */}
       
@@ -38,6 +39,8 @@ function Counter(){
   const IncreaseCount=()=>{
     const newCountPlus=count+5;
     setCount(newCountPlus)
+  }
+  const DecreaseCount=()=>{
     const newCountMinus=count-5;
     setCount(newCountMinus)
   }
@@ -47,7 +50,37 @@ function Counter(){
       <button onClick={IncreaseCount}>Increase</button>
       <br />
       <br />
-      <button onClick={IncreaseCount}>Decrease</button>
+      <button onClick={DecreaseCount}>Decrease</button>
+    </div>
+  )
+}
+
+function ExternalUser(){
+  const [users,setUsers]=useState([]);
+  // useEffect( ()=>{
+  //
+  // },[]);
+  useEffect( ()=>{
+  fetch('https://jsonplaceholder.typicode.com/users')
+  .then(res=>res.json())
+  .then(data=>setUsers(data));
+  },[]);
+  return(
+    <div>
+      <h2>External user</h2>
+      <p>{users.length}</p>
+      {
+        users.map(user=> <User name={user.name} email={user.email} phone={user.city}></User>)
+      }
+    </div>
+  )
+}
+
+function User(props){
+  return(
+    <div>
+      <h3>Name: {props.name}</h3>
+      <p>Email: {props.email}</p>
     </div>
   )
 }
